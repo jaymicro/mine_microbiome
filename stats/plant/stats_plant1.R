@@ -11,10 +11,10 @@ library(easystats)
 
 # Import data -------------------------------------------------------------------------------------------
 
-meta <- read.csv("data/soil/meta1.csv") %>% 
+meta <- read.csv("../../data/soil/meta1.csv") %>% 
   janitor::clean_names()
 
-plant <- read.csv("data/plant/veg_combined.csv") %>% 
+plant <- read.csv("../../data/plant/veg_combined.csv") %>% 
   janitor::clean_names() %>% 
   replace(is.na(.), 0) %>% 
   inner_join(., meta, by = c("site_code", "replicate")) %>% 
