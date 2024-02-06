@@ -100,7 +100,8 @@ rich2 <- ggplot(div_df, aes(x = reclamation_method, y = rich))+
   expand_limits(y = c(0,10))
 
 rich2
-plnt_rich <- rich1 + rich2+ plot_layout(guides = "collect")  & theme(legend.position = 'bottom')
+plnt_rich <- rich1 + rich2+ plot_layout(guides = "collect") +
+  plot_annotation(tag_levels = 'A') & theme(legend.position = 'bottom')
 plnt_rich 
 
 #ggsave(plnt_rich, filename = "../../../plot/plant_richness.jpg", width = 10, height = 6, dpi = 1000)
