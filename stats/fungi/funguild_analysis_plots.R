@@ -153,9 +153,9 @@ plot(resid(m3))
 patho_plot <- ggplot(path_rich, aes(y = rich, x = age, fill = age)) +
   geom_point(pch = 21, size =3) +
   geom_smooth(method = "lm", color = "black") +
-  scale_fill_viridis_c(name = "Reclamation age",direction = -1) +
+  scale_fill_viridis_c(direction = -1) +
   theme_bw()+
-  theme(legend.position = "bottom",
+  theme(legend.position = "none",
         legend.title = element_text(size =18),
         legend.text = element_text(size = 16),
         legend.key.width = unit(1.25, "cm"),
@@ -196,7 +196,7 @@ sapro_plot <- ggplot(sap_rich, aes(y = rich, x = age, fill = age)) +
   geom_smooth(method = "lm",
               formula = y ~ x + I(x^2),
               color = "black") +
-  scale_fill_viridis_c(name = "Reclamation age",direction = -1) +
+  scale_fill_viridis_c(name = "Reclamation age (yr)",direction = -1) +
   theme_bw()+
   theme(legend.position = "bottom",
         legend.title = element_text(size =18),
@@ -240,9 +240,9 @@ symbio_plot <- ggplot(symbio_rich, aes(y = rich, x = age, fill = age)) +
   geom_smooth(method = "lm",
               formula = y ~ x + I(x^2),
               color = "black") +
-  scale_fill_viridis_c(name = "Reclamation age",direction = -1) +
+  scale_fill_viridis_c(direction = -1) +
   theme_bw()+
-  theme(legend.position = "bottom",
+  theme(legend.position = "none",
         legend.title = element_text(size =18),
         legend.text = element_text(size = 16),
         legend.key.width = unit(1.25, "cm"),
@@ -262,8 +262,8 @@ symbio_plot
 
 # Combining all plots -----------------------------------------------------------------------------------
 
-funguild_plot <- patho_plot + sapro_plot + symbio_plot+ plot_annotation(tag_levels = 'A') +
-  plot_layout(guides = "collect")  & theme(legend.position = 'bottom')
+funguild_plot <- patho_plot + sapro_plot + symbio_plot+ plot_annotation(tag_levels = 'A') #+
+  #plot_layout(guides = "collect")  & theme(legend.position = 'bottom')
 funguild_plot 
 
 
