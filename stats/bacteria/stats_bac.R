@@ -309,20 +309,97 @@ alpha_df <- meta_data %>%
 str(alpha_df)
 
 #Not significant
-m3 <- lmer(shann ~ age + reclamation_method + (1|site_code), 
+m3 <- lm(shann ~ age + reclamation_method , 
            data = alpha_df)
 summary(m3)
 anova(m3)
 
 
-m4 <- glmer(richness ~ age + reclamation_method + (1|site_code), 
+m4 <- glm(richness ~ age + reclamation_method , 
            family = "poisson",data = alpha_df)
 summary(m4)
-anova(m4)
+car::Anova(m4, test.statistic = "F")
 
 
-m5 <- lmer(simp ~ age + reclamation_method + (1|site_code), 
+m5 <- lm(simp ~ age + reclamation_method , 
             data = alpha_df)
 summary(m5)
 anova(m5)
+
+
+#alpha diversity plot
+bac_shann <- ggplot(alpha_df, aes(x = age, y = shann)) +
+  geom_point(pch = 21, size = 2,alpha = 0.75,  aes(fill = age),show.legend = F)+
+  geom_smooth(method = "lm", se = T, color = "black", size = 1.25) +
+  scale_fill_viridis_c(name = "Reclamation age (yr)", direction = -1) +
+  theme_bw() +
+  theme(legend.title = element_text(size =16),
+        axis.title = element_text(size = 18),
+        axis.text = element_text(size = 16, color = "black")) +
+  scale_x_continuous(breaks = seq(0,35,by = 5)) +
+  labs(x = NULL,
+       y = "Shannon-Weiner index")
+bac_shann
+
+bac_richness <- ggplot(alpha_df, aes(x = age, y = richness)) +
+  geom_point(pch = 21, size = 2,alpha = 0.75,  aes(fill = age),show.legend = F)+
+  geom_smooth(method = "lm", se = T, color = "black", size = 1.25) +
+  scale_fill_viridis_c(name = "Reclamation age (yr)", direction = -1) +
+  theme_bw() +
+  theme(legend.title = element_text(size =16),
+        axis.title = element_text(size = 18),
+        axis.text = element_text(size = 16, color = "black")) +
+  scale_x_continuous(breaks = seq(0,35,by = 5)) +
+  labs(x = NULL,
+       y = "Observed richness")
+bac_richness 
+
+
+bac_simp <- ggplot(alpha_df, aes(x = age, y = simp)) +
+  geom_point(pch = 21, size = 2,alpha = 0.75,  aes(fill = age),show.legend = T)+
+  geom_smooth(method = "lm", se = T, color = "black", size = 1.25) +
+  scale_fill_viridis_c(name = "Reclamation age (yr)", direction = -1) +
+  theme_bw() +
+  theme(legend.title = element_text(size =16),
+        axis.title = element_text(size = 18),
+        axis.text = element_text(size = 16, color = "black"),
+        legend.position = 'bottom') +
+  scale_x_continuous(breaks = seq(0,35,by = 5)) +
+  labs(x = NULL,
+       y = "Simpson index")
+bac_simp
+
+
+alpha_div <- bac_shann + bac_simp + bac_richness +
+  plot_annotation(tag_levels = "A") 
+
+alpha_div
+
+#ggsave(alpha_div, filename = "../../../plot/bac_alpha_div.jpg", width = 16, height = 7, dpi = 1000)
+
+div <- c("Observed\nrichness", "Shannon-Weiner\nindex", "Simpson\nindex")
+names(div) <- c("richness", "shann", "simp")
+
+comp <- list(c("biosolids", "no_biosolids"))
+
+bac_alpha_div_reclam_method <- alpha_df %>% 
+  select(reclamation_method, shann, simp, richness) %>% 
+  pivot_longer(-reclamation_method) %>% 
+  ggplot(.,aes(x = reclamation_method, y = value, fill = reclamation_method)) +
+  geom_violin(alpha = 0.6, show.legend = F) +
+  geom_boxplot(width = 0.3, color = "black")+
+  facet_wrap(~ name, scales = "free", labeller = labeller(name = div))+
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  scale_fill_viridis_d(name = "Reclamation method") +
+  ggpubr::stat_compare_means(comparisons = comp, label = "p.signif") +
+  labs(x = NULL,
+       y = "Alpha diversity")
+
+bac_alpha_div_reclam_method
+
+#ggsave(bac_alpha_div_reclam_method, filename = "../../../plot/bac_alpha_div_reclam_method.jpg", width = 16, height = 7, dpi = 1000)
+
+
+
 
