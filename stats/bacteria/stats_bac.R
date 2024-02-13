@@ -268,7 +268,7 @@ p4 <- ggeffects::ggpredict(mod_log, terms = "age") %>%
   scale_x_continuous(breaks = seq(0,30,by = 5)) +
   labs(title = "Predicted probablities of\nDeterministic Assembly",
        y = NULL,
-       x = "Reclamation age")
+       x = "Reclamation age (yr)")
   
 p4
 
@@ -287,7 +287,7 @@ p5
 assembly_plot <- p4 + p5 + plot_annotation(tag_levels = "A")
 assembly_plot
 
-#ggsave(assembly_plot, filename = "../../../plot/assembly_plot.jpg", width = 12, height = 7, dpi = 1000)
+#ggsave(assembly_plot, filename = "../../plot/assembly_plot.jpg", width = 12, height = 7, dpi = 1000)
 
 
 # Alpha diversity ---------------------------------------------------------------------------------------
