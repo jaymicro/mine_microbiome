@@ -70,7 +70,7 @@ str(bd)
 m2 <- lmer(sim ~ age + (1|sample), bd)
 summary(m2)
 car::Anova(m2, test.statistic = "F")
-MuMIn::r.squaredGLMM(m2)
+round(MuMIn::r.squaredGLMM(m2)[[1]],4)
 
 
 
