@@ -16,7 +16,8 @@ library(patchwork)
 
 
 gene <- read_tsv("../../data/shotgun/relab_genefamilies.tsv", show_col_types = FALSE) %>% 
-  janitor::clean_names() 
+  janitor::clean_names() %>% 
+  filter(!str_detect(gene_family, pattern = "unclassified"))
 
 metadata <- read.csv("../../data/shotgun/meta_data.csv")
 
@@ -117,7 +118,7 @@ p2 <- ggplot(bd, aes(x = age, y = sim)) +
   labs(x = "Reclamation age (yr)",
        y = "Similarity with reference site") +
   annotate(geom = "text", x = 9, y=20,
-           label =  expression(paste(R[m]^2 == 0.639, "; pval < 0.001")), size =4,
+           label =  expression(paste(R[m]^2 == 0.669, "; pval < 0.001")), size =4,
            parse = T)
 
 p2
